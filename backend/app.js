@@ -1,13 +1,32 @@
 const express = require("express");
 const app = express();
-app.use(express.json());
+const path = require("path");
+const morgan = require("morgan");
+const cors = require("cors");
+const authRouters = require("./routes/auth");
 
-app.get("/api/health", (req, res) => {
-	res.json({
+morgan.token("timestamp", (req, res) => {
+	return new Date().toLocaleString();
+});
+app.use(morgan(":timestamp { :method :url :status } [:response-time ms]"));
+app.use(express.json());
+app.use(
+	cors({
+		origin: "http://localhost:5000",
+		methods: ["GET", "POST", "PUT", "DELETE"],
+		credentials: true,
+	}),
+);
+// app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+
+app.get("/health", (req, res) => {
+	return res.json({
 		success: true,
 		message: "Server is Running",
 	});
 });
+
+app.use("/auth", authRouters);
 
 module.exports = app;
 
