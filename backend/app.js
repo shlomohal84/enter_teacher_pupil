@@ -3,7 +3,9 @@ const app = express();
 const path = require("path");
 const morgan = require("morgan");
 const cors = require("cors");
-const authRouters = require("./routes/auth");
+const cookieParser = require("cookie-parser");
+
+const authRoutes = require("./routes/authRoutes");
 
 morgan.token("timestamp", (req, res) => {
 	return new Date().toLocaleString();
@@ -17,7 +19,8 @@ app.use(
 		credentials: true,
 	}),
 );
-// app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+app.use(cookieParser());
 
 app.get("/health", (req, res) => {
 	return res.json({
@@ -26,7 +29,8 @@ app.get("/health", (req, res) => {
 	});
 });
 
-app.use("/auth", authRouters);
+app.use("/", authRoutes);
+app.use("/auth", authRoutes);
 
 module.exports = app;
 

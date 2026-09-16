@@ -1,8 +1,13 @@
 "use strict";
 
 const router = require("express").Router();
-const { register } = require("../controllers/authController");
+const { userVerification } = require("#middleware/authMiddleware.js");
+const { register, login } = require("../controllers/authController");
+
+router.post("/", userVerification);
 router.post("/register", register);
+router.post("/login", login);
+module.exports = router;
 
 // // Login User
 // router.post("/login", async (req, res) => {
@@ -28,5 +33,3 @@ router.post("/register", register);
 // 		return res.status(500).json({ error: error.message });
 // 	}
 // });
-
-module.exports = router;
