@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 export default function Home() {
 	const navigate = useNavigate();
@@ -29,10 +29,10 @@ export default function Home() {
 
 				if (status) {
 					setUsername(user);
-					toast(`Hello ${user}`, {
-						position: "top-right",
-						toastId: `welcome-${user}`,
-					});
+					// toast(`Hello ${user}`, {
+					// 	position: "top-right",
+					// 	toastId: `welcome-${user}`,
+					// });
 					setIsLoading(false);
 				} else {
 					await removeCookie("token", { path: "/" });

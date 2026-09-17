@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./routes/authRoutes");
+const pupilRoutes = require("./routes/pupilRoutes");
 
 morgan.token("timestamp", (req, res) => {
 	return new Date().toLocaleString();
@@ -31,6 +32,8 @@ app.get("/health", (req, res) => {
 
 app.use("/", authRoutes);
 app.use("/auth", authRoutes);
+
+app.use("/pupils", pupilRoutes);
 
 module.exports = app;
 
