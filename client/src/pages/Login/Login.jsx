@@ -3,15 +3,17 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styles from "../Register/Register.module.css";
+import { useAuth } from "#src/hooks/useAuth.js";
 
 export default function Login() {
 	const navigate = useNavigate();
+	const { setUser, isLoading } = useAuth();
 
 	const [formData, setFormData] = useState({
 		email: "shlomo@halperin.com",
 		password: "1234",
 	});
-
+	const [localSubmitting, setLocalSubmitting] = useState(false);
 	const { email, password } = formData;
 
 	const handleChange = (e) => {
@@ -32,29 +34,32 @@ export default function Login() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLocalSubmitting(true);
 		try {
 			const { data } = await axios.post(
 				"/api/auth/login",
 				{ ...formData },
 				{ withCredentials: true },
 			);
+			const { success, message, user } = data;
 			console.log(data);
-			const { success, message } = data;
 			if (success) {
 				handleSuccess(message);
 				setFormData({ ...formData, email: "", password: "" });
-
-				setTimeout(() => {
-					navigate("/");
-				}, 1000);
+				setUser(user);
+				navigate("/");
 			} else {
 				handleError(message);
+				setLocalSubmitting(false);
 			}
 		} catch (error) {
-			console.log(error);
+			console.log("Login component submission error", error);
+			setLocalSubmitting(false);
 		}
 	};
-
+	if (isLoading) {
+		return <h1>Checking session validity...</h1>;
+	}
 	return (
 		<div className={styles.Login}>
 			<form onSubmit={handleSubmit}>
@@ -77,7 +82,9 @@ export default function Login() {
 					/>
 				</div>
 				<div className={styles["submit-wrapper"]}>
-					<button type="submit">Login</button>
+					<button type="submit" disabled={localSubmitting}>
+						{localSubmitting ? "Logging in..." : "Submit"}
+					</button>
 				</div>
 			</form>
 		</div>

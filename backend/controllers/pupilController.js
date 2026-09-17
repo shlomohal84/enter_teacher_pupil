@@ -31,7 +31,7 @@ module.exports.findPupils = async (req, res) => {
 		console.log(pupils);
 		return res.status(200).json({ message: "Loaded successfully", pupils });
 	} catch (error) {
-		console.log(error.message);
+		console.log(error);
 		return res.status(400).json({ message: error.message });
 	}
 };

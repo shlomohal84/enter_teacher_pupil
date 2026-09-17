@@ -5,12 +5,15 @@ import App from "./App.jsx";
 // import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import { CookiesProvider } from "react-cookie";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
 	<StrictMode>
 		<BrowserRouter>
 			<CookiesProvider>
-				<App />
+				<AuthProvider>
+					<App />
+				</AuthProvider>
 			</CookiesProvider>
 		</BrowserRouter>
 	</StrictMode>,

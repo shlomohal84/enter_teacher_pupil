@@ -1,12 +1,18 @@
 "use strict";
 
 const router = require("express").Router();
+const {
+	verifySession,
+	logout,
+	register,
+	login,
+} = require("#controllers/authController.js");
 const { userVerification } = require("#middleware/authMiddleware.js");
-const { register, login } = require("../controllers/authController");
 
-router.post("/", userVerification);
+router.post("/verify-session", userVerification, verifySession);
 router.post("/register", register);
 router.post("/login", login);
+router.post("/logout", logout);
 module.exports = router;
 
 // // Login User
