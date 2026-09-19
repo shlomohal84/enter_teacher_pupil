@@ -3,27 +3,43 @@ import { useState } from "react";
 
 export default function AddPupil() {
 	const [formData, setFormData] = useState({
-		id: "",
-		fullName: "",
-		cSharp: "",
-		fullstack: "",
-		finalProject: "",
+		idNum: "aaaa",
+		fullName: "aaa aaaa",
+		cSharp: "1",
+		fullstack: "1",
+		finalProject: "1",
 	});
-	const { id, fullName, cSharp, fullstack, finalProject } = formData;
+	const { idNum, fullName, cSharp, fullstack, finalProject } = formData;
+
 	const handleInputChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const handleAddPupil = async (e) => {
 		e.preventDefault();
+		const pupilData = {
+			idNum: idNum,
+			fullName: fullName,
+			grades: [
+				{
+					cSharp: formData.cSharp,
+					fullstack: formData.fullstack,
+					finalProject: formData.finalProject,
+				},
+			],
+		};
 		try {
-			const { data } = await axios.post(
-				"api/pupils/add",
-				{ id, fullName, cSharp, fullstack, finalProject },
-				{ withCredentials: true },
+			console.log(
+				"PAYLOAD BEING SENT TO SERVER:",
+				JSON.stringify(pupilData, null, 2),
 			);
+
+			const { data } = await axios.post("api/pupils/add", pupilData, {
+				withCredentials: true,
+			});
+			console.log(data);
 		} catch (error) {
-			console.log(error);
+			console.error(error.response?.data.message);
 		}
 	};
 	return (
@@ -33,9 +49,9 @@ export default function AddPupil() {
 			<form onSubmit={handleAddPupil} className="form-container flex-column">
 				<input
 					onChange={handleInputChange}
-					value={id}
+					value={idNum}
 					type="text"
-					name="id"
+					name="idNum"
 					placeholder="ID number"
 				/>
 				<input

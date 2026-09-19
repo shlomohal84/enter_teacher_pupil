@@ -8,7 +8,7 @@ export default function PupilsList() {
 	useEffect(() => {
 		const getPupils = async () => {
 			try {
-				const { data } = await axios.post(
+				const { data } = await axios.get(
 					"/api/pupils",
 					{},
 					{ withCredentials: true },

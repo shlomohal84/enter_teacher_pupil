@@ -1,4 +1,6 @@
-export default function PupilDetails({ idNum, fullName, grades }) {
+import { Link } from "react-router-dom";
+
+export default function PupilDetails({ idNum, fullName, grades, _id }) {
 	return (
 		<div className="PupilDetails" style={{ textAlign: "center" }}>
 			<h3>
@@ -25,6 +27,9 @@ export default function PupilDetails({ idNum, fullName, grades }) {
 						))}
 					</div>
 				))}
+				<div>
+					<Link to={"/" + _id}>Show Pupil</Link>
+				</div>
 			</div>
 		</div>
 	);

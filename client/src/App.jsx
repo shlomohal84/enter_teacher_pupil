@@ -5,6 +5,7 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddPupil from "./pages/AddPupil/AddPupil";
+import PupilCard from "./pages/PupilCard/PupilCard";
 function App() {
 	return (
 		<div className="App">
@@ -15,6 +16,7 @@ function App() {
 				<Route element={<ProtectedRoute />}>
 					<Route path="/" element={<Home />} />
 					<Route path="/add" element={<AddPupil />} />
+					<Route path="/:id" element={<PupilCard />} />
 				</Route>
 			</Routes>
 			<ToastContainer />
