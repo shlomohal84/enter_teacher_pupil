@@ -4,35 +4,32 @@ const Pupil = require("../models/Pupil");
 module.exports.addPupil = async (req, res) => {
 	try {
 		const { idNum, fullName, grades, userId } = req.body;
-		// console.log(userId);
 		const user = await User.findOne({ _id: userId });
-		console.log(user._id);
 		const pupil = await Pupil.create({
 			idNum: idNum,
 			fullName: fullName,
 			grades: grades,
-			userId: user._id,
+			user: user._id,
 		});
-		// console.log(pupil);
 		return res
 			.status(200)
 			.json({ message: "Pupil added successfully", pupil: pupil });
 	} catch (error) {
-		console.log(error.message);
-		return res.status(400).json({ message: error.message });
+		console.log(error);
+		res.status(400).json({ message: error.message });
 	}
 };
 
 module.exports.findPupils = async (req, res) => {
 	try {
-		const { userId } = req.body;
-		console.log(req.body);
-		const pupils = await Pupil.find({ userId });
-		console.log(pupils);
-		return res.status(200).json({ message: "Loaded successfully", pupils });
+		const user = req.body;
+		const pupils = await Pupil.find(user._id).populate("user", "name");
+		return res
+			.status(200)
+			.json({ message: "Loaded successfully", count: pupils.length, pupils });
 	} catch (error) {
 		console.log(error);
-		return res.status(400).json({ message: error.message });
+		res.status(400).json({ message: error.message });
 	}
 };
 // 	const user = new User({
