@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePupils } from "#src/hooks/usePupils.js";
 export default function AddPupil() {
+	const { setPupils } = usePupils();
+
 	const [formData, setFormData] = useState({
 		idNum: "aaaa",
 		fullName: "aaa aaaa",
@@ -22,7 +25,7 @@ export default function AddPupil() {
 			const { data } = await axios.post("api/pupils/add", pupilData, {
 				withCredentials: true,
 			});
-			console.log(data.message);
+			setPupils((prevState) => [...prevState, data.pupil]);
 			navigate("/");
 		} catch (error) {
 			const errorMessage =

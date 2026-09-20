@@ -4,7 +4,6 @@ import PupilDetails from "../PupilDetails/PupilDetails";
 
 export default function PupilsList() {
 	const { pupils } = usePupils();
-
 	return (
 		<div className="PupilsList">
 			<h3>PupilsList</h3>

@@ -9,6 +9,13 @@ module.exports.addPupil = async (req, res) => {
 			console.log("User not found");
 			return res.status(404).json({ message: "User not found" });
 		}
+
+		const existingPupil = await Pupil.findOne({ idNum: idNum });
+		if (existingPupil) {
+			return res
+				.status(400)
+				.json({ message: `A pupil with ID Number ${idNum} already exists.` });
+		}
 		const pupil = await Pupil.create({
 			idNum: idNum,
 			fullName: fullName,
@@ -51,6 +58,22 @@ module.exports.showPupil = async (req, res) => {
 		return res.status(200).json({ message: pupil });
 	} catch (error) {
 		console.log(error);
-		return res.status(400).json(error.message);
+		return res.status(400).json({ message: error.message });
+	}
+};
+
+module.exports.addAssignment = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { title } = req.body;
+		console.log(title);
+		const pupil = await Pupil.findOne({ _id: id });
+		pupil.assignments.push({ title: title });
+		console.log(pupil);
+		await pupil.save();
+
+		return res.status(200).json({ message: "Controller running properly" });
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
 	}
 };
