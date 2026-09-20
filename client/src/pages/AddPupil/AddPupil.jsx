@@ -1,16 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function AddPupil() {
 	const [formData, setFormData] = useState({
 		idNum: "aaaa",
 		fullName: "aaa aaaa",
-		cSharp: "1",
-		fullstack: "1",
-		finalProject: "1",
 	});
-	const { idNum, fullName, cSharp, fullstack, finalProject } = formData;
-
+	const { idNum, fullName } = formData;
+	const navigate = useNavigate();
 	const handleInputChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
@@ -20,26 +17,17 @@ export default function AddPupil() {
 		const pupilData = {
 			idNum: idNum,
 			fullName: fullName,
-			grades: [
-				{
-					cSharp: formData.cSharp,
-					fullstack: formData.fullstack,
-					finalProject: formData.finalProject,
-				},
-			],
 		};
 		try {
-			console.log(
-				"PAYLOAD BEING SENT TO SERVER:",
-				JSON.stringify(pupilData, null, 2),
-			);
-
 			const { data } = await axios.post("api/pupils/add", pupilData, {
 				withCredentials: true,
 			});
-			console.log(data);
+			console.log(data.message);
+			navigate("/");
 		} catch (error) {
-			console.error(error.response?.data.message);
+			const errorMessage =
+				error.response?.data?.message || error.message || "An error occured";
+			console.log(errorMessage);
 		}
 	};
 	return (
@@ -60,27 +48,6 @@ export default function AddPupil() {
 					type="text"
 					name="fullName"
 					placeholder="FullName"
-				/>
-				<input
-					onChange={handleInputChange}
-					value={cSharp}
-					type="text"
-					name="cSharp"
-					placeholder="C#"
-				/>
-				<input
-					onChange={handleInputChange}
-					value={fullstack}
-					type="text"
-					name="fullstack"
-					placeholder="Fullstack"
-				/>
-				<input
-					onChange={handleInputChange}
-					value={finalProject}
-					type="text"
-					name="finalProject"
-					placeholder="Final Project"
 				/>
 				<button type="submit">Add Pupil</button>
 			</form>

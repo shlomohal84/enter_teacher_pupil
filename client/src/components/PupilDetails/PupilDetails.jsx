@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function PupilDetails({ idNum, fullName, grades, _id }) {
+export default function PupilDetails({ idNum, fullName /* , grades */, _id }) {
 	return (
 		<div className="PupilDetails" style={{ textAlign: "center" }}>
 			<h3>
@@ -8,7 +8,7 @@ export default function PupilDetails({ idNum, fullName, grades, _id }) {
 			</h3>
 
 			<div className="grades-container">
-				{grades.map((grade) => (
+				{/* {grades.map((grade) => (
 					<div
 						className="grade-wrapper"
 						key={idNum}
@@ -26,7 +26,7 @@ export default function PupilDetails({ idNum, fullName, grades, _id }) {
 							</div>
 						))}
 					</div>
-				))}
+				))} */}
 				<div>
 					<Link to={"/" + _id}>Show Pupil</Link>
 				</div>

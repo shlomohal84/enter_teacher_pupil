@@ -3,8 +3,7 @@ const Pupil = require("../models/Pupil");
 
 module.exports.addPupil = async (req, res) => {
 	try {
-		const { idNum, fullName, grades } = req.body;
-		console.log(req.body);
+		const { idNum, fullName } = req.body;
 		const findUser = await User.findOne({ _id: req.user._id });
 		if (!findUser) {
 			console.log("User not found");
@@ -13,15 +12,15 @@ module.exports.addPupil = async (req, res) => {
 		const pupil = await Pupil.create({
 			idNum: idNum,
 			fullName: fullName,
-			grades: grades,
 			user: req.user._id,
 		});
 		return res
 			.status(200)
 			.json({ message: "Pupil added successfully", pupil: pupil });
 	} catch (error) {
-		console.log(error);
-		res.status(400).json({ message: error });
+		const cleanMessage =
+			Object.values(error.errors || {}).message || error.message;
+		return res.status(400).json({ message: cleanMessage });
 	}
 };
 
@@ -31,17 +30,17 @@ module.exports.findPupils = async (req, res) => {
 			"user",
 			"name",
 		);
-		console.log(pupils);
-		if (!pupils) {
+
+		if (!pupils.length) {
 			console.log("No pupils found");
-			return res.status(404).json({ message: "No pupils found" });
+			return res.status(200).json({ message: "No pupils found", pupils: [] });
 		}
 		return res
 			.status(200)
 			.json({ message: "Loaded successfully", count: pupils.length, pupils });
 	} catch (error) {
 		console.log(error);
-		res.status(400).json({ message: error.message });
+		return res.status(400).json({ error: error.message });
 	}
 };
 
@@ -49,7 +48,6 @@ module.exports.showPupil = async (req, res) => {
 	const { params } = req;
 	try {
 		const pupil = await Pupil.findOne({ _id: params.id });
-		console.log(pupil);
 		return res.status(200).json({ message: pupil });
 	} catch (error) {
 		console.log(error);

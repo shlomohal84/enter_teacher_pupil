@@ -1,25 +1,9 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-
+// import { useEffect } from "react";
+import { usePupils } from "#src/hooks/usePupils.js";
 import PupilDetails from "../PupilDetails/PupilDetails";
 
 export default function PupilsList() {
-	const [pupils, setPupils] = useState([]);
-	useEffect(() => {
-		const getPupils = async () => {
-			try {
-				const { data } = await axios.get(
-					"/api/pupils",
-					{},
-					{ withCredentials: true },
-				);
-				setPupils(data.pupils);
-			} catch (error) {
-				console.log(error.message);
-			}
-		};
-		getPupils();
-	}, [setPupils]);
+	const { pupils } = usePupils();
 
 	return (
 		<div className="PupilsList">
