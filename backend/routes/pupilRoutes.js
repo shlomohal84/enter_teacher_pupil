@@ -7,12 +7,14 @@ const {
 	showPupil,
 	addAssignment,
 	deleteAssignment,
+	deletePupil,
 } = require("../controllers/PupilController");
 const {
 	isLoggedIn,
 	userVerification,
 } = require("../middleware/authMiddleware");
 router.get("/", userVerification, findPupils);
+router.delete("/", userVerification, deletePupil);
 router.post("/add", userVerification, addPupil);
 router.get("/:id", userVerification, showPupil);
 router.put("/:id/add", userVerification, addAssignment);
