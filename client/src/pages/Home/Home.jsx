@@ -1,19 +1,18 @@
 import { useAuth } from "#src/hooks/useAuth.js";
-import { Link } from "react-router-dom";
 import PupilsList from "../../components/PupilsList/PupilsList";
+import Typography from "@mui/material/Typography";
 // import { toast } from "react-toastify";
 
 export default function Home() {
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 
 	return (
 		<div className="Home">
-			<Link to="/add">Add Pupil</Link>
-			<h4>
-				Welcome <span>{user}</span>
-			</h4>
+			<Typography variant="h3" component="h2" sx={{ textAlign: "center" }}>
+				Hello {user}
+			</Typography>
+
 			<PupilsList />
-			<button onClick={logout}>Logout</button>
 		</div>
 	);
 }

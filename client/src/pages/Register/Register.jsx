@@ -3,14 +3,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styles from "./Register.module.css";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 export default function Register() {
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
-		name: "Shlomo H.",
-		idNum: "001",
-		password: "1234",
+		name: "",
+		idNum: "",
+		password: "",
 	});
 
 	const { name, idNum, password } = formData;
@@ -57,31 +59,43 @@ export default function Register() {
 
 	return (
 		<div className={styles.Register}>
+			<Typography variant="h3" component="h2" sx={{ textAlign: "center" }}>
+				Register
+			</Typography>
 			<form onSubmit={handleSubmit}>
 				<div className={styles["input-group"]}>
-					<input
-						type="text"
-						name="name"
-						placeholder="name"
-						onChange={handleChange}
-						required
-						value={name}
-					/>
-					<input
+					<TextField
 						type="text"
 						name="idNum"
 						placeholder="ID number"
 						onChange={handleChange}
 						required
 						value={idNum}
+						label="ID Number"
+						id="outlined-basic"
+						variant="outlined"
 					/>
-					<input
+					<TextField
+						type="text"
+						name="name"
+						placeholder="name"
+						onChange={handleChange}
+						required
+						value={name}
+						label="Full name"
+						id="outlined-basic"
+						variant="outlined"
+					/>
+					<TextField
 						type="password"
 						name="password"
 						placeholder="Password"
 						onChange={handleChange}
 						required
 						value={password}
+						label="Password"
+						id="outlined-basic"
+						variant="outlined"
 					/>
 				</div>
 				<div className={styles["submit-wrapper"]}>

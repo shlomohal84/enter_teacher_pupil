@@ -2,12 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
+import TextField from "@mui/material/TextField";
 export default function AddPupil() {
 	const { setPupils } = usePupils();
 
 	const [formData, setFormData] = useState({
-		idNum: "001",
-		fullName: "John Doe",
+		idNum: "",
+		fullName: "",
 	});
 	const { idNum, fullName } = formData;
 	const navigate = useNavigate();
@@ -38,19 +39,27 @@ export default function AddPupil() {
 			<h1>Add Pupil</h1>
 
 			<form onSubmit={handleAddPupil} className="form-container flex-column">
-				<input
+				<TextField
 					onChange={handleInputChange}
 					value={idNum}
 					type="text"
 					name="idNum"
 					placeholder="ID number"
+					label="ID number"
+					id="outlined-basic"
+					variant="outlined"
+					required
 				/>
-				<input
+				<TextField
 					onChange={handleInputChange}
 					value={fullName}
 					type="text"
 					name="fullName"
-					placeholder="FullName"
+					placeholder="Full name"
+					required
+					label="Full name"
+					id="outlined-basic"
+					variant="outlined"
 				/>
 				<button type="submit">Add Pupil</button>
 			</form>
