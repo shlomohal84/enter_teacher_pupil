@@ -11,6 +11,8 @@ import PupilProfile from "./pages/PupilProfile.jsx/PupilProfile";
 import "./App.css";
 import { useAuth } from "./hooks/useAuth";
 import axios from "axios";
+import AddAssignment from "./pages/AddAssignment/AddAssignment";
+import PublicRoute from "./components/PublicRoute/PublicRoute";
 function App() {
 	const [pupils, setPupils] = useState([]);
 	const [loadingPupils, setLoadingPupils] = useState(true);
@@ -55,12 +57,15 @@ function App() {
 			<Header />
 			<PupilsProvider value={{ pupils, setPupils }}>
 				<Routes>
-					<Route path="/register" element={<Register />} />
-					<Route path="/login" element={<Login />} />
+					<Route element={<PublicRoute />}>
+						<Route path="/register" element={<Register />} />
+						<Route path="/login" element={<Login />} />
+					</Route>
 					<Route element={<ProtectedRoute />}>
 						<Route path="/" element={<Home />} />
 						<Route path="/add" element={<AddPupil />} />
 						<Route path="/:id" element={<PupilProfile />} />
+						<Route path="/:id/add" element={<AddAssignment />} />
 					</Route>
 				</Routes>
 			</PupilsProvider>

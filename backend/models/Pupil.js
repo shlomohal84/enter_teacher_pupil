@@ -20,6 +20,7 @@ const PupilSchema = new mongoose.Schema(
 			type: String,
 			unique: true,
 			required: true,
+			match: [/^\d+$/, "The value can contain only numerals (0-9)."],
 		},
 		fullName: {
 			type: String,

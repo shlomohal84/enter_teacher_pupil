@@ -9,11 +9,11 @@ export default function Register() {
 
 	const [formData, setFormData] = useState({
 		name: "Shlomo H.",
-		email: "shlomo@halperin.com",
+		idNum: "001",
 		password: "1234",
 	});
 
-	const { name, email, password } = formData;
+	const { name, idNum, password } = formData;
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,7 +52,7 @@ export default function Register() {
 		} catch (error) {
 			console.log(error);
 		}
-		setFormData({ ...formData, email: "", password: "", name: "" });
+		setFormData({ ...formData, idNum: "", password: "", name: "" });
 	};
 
 	return (
@@ -69,11 +69,11 @@ export default function Register() {
 					/>
 					<input
 						type="text"
-						name="email"
-						placeholder="Email"
+						name="idNum"
+						placeholder="ID number"
 						onChange={handleChange}
 						required
-						value={email}
+						value={idNum}
 					/>
 					<input
 						type="password"

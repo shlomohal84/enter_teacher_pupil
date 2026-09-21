@@ -6,6 +6,7 @@ const {
 	findPupils,
 	showPupil,
 	addAssignment,
+	deleteAssignment,
 } = require("../controllers/PupilController");
 const {
 	isLoggedIn,
@@ -14,5 +15,7 @@ const {
 router.get("/", userVerification, findPupils);
 router.post("/add", userVerification, addPupil);
 router.get("/:id", userVerification, showPupil);
-router.post("/:id/add", userVerification, addAssignment);
+router.put("/:id/add", userVerification, addAssignment);
+router.delete("/:id/delete", userVerification, deleteAssignment);
+
 module.exports = router;

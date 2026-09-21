@@ -10,11 +10,11 @@ export default function Login() {
 	const { setUser, isLoading } = useAuth();
 
 	const [formData, setFormData] = useState({
-		email: "shlomo@halperin.com",
+		idNum: "001",
 		password: "1234",
 	});
 	const [localSubmitting, setLocalSubmitting] = useState(false);
-	const { email, password } = formData;
+	const { idNum, password } = formData;
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,7 +44,7 @@ export default function Login() {
 			const { success, message, user } = data;
 			if (success) {
 				handleSuccess(message);
-				setFormData({ ...formData, email: "", password: "" });
+				setFormData({ ...formData, idNum: "", password: "" });
 				setUser(user);
 				navigate("/");
 			} else {
@@ -65,11 +65,11 @@ export default function Login() {
 				<div className={styles["input-group"]}>
 					<input
 						type="text"
-						name="email"
-						placeholder="Email"
+						name="idNum"
+						placeholder="ID number"
 						onChange={handleChange}
 						required
-						value={email}
+						value={idNum}
 					/>
 					<input
 						type="password"

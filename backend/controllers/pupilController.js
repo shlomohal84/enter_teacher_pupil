@@ -66,14 +66,49 @@ module.exports.addAssignment = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const { title } = req.body;
-		console.log(title);
 		const pupil = await Pupil.findOne({ _id: id });
+		if (!pupil) {
+			return res.status(404).json({ message: "Pupil not found" });
+		}
 		pupil.assignments.push({ title: title });
-		console.log(pupil);
+		await pupil.save();
+		const newAssignment = pupil.assignments[pupil.assignments.length - 1];
+
+		return res.status(200).json({
+			message: "Added assignment successfully",
+			newAssignment,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json({ message: error.message });
+	}
+};
+
+module.exports.deleteAssignment = async (req, res) => {
+	try {
+		const { assignmentId } = req.body;
+		console.log(req.body);
+		const pupilId = req.params.id;
+
+		const pupil = await Pupil.findOne({ _id: pupilId });
+		if (!pupil) return res.status(404).json({ message: "Pupil not found" });
+
+		const hasAssignment = pupil.assignments.some(
+			(assignment) => assignment._id.toString() === assignmentId,
+		);
+		if (!hasAssignment) {
+			return res.status(404).json({ message: "Assignment not found" });
+		}
+
+		pupil.assignments.pull({ _id: assignmentId });
 		await pupil.save();
 
-		return res.status(200).json({ message: "Controller running properly" });
+		return res.json({
+			message: "Deleting...",
+			assignmentId: assignmentId,
+		});
 	} catch (error) {
+		console.log(error);
 		return res.status(400).json({ message: error.message });
 	}
 };

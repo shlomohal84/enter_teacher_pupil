@@ -6,8 +6,8 @@ export default function AddPupil() {
 	const { setPupils } = usePupils();
 
 	const [formData, setFormData] = useState({
-		idNum: "aaaa",
-		fullName: "aaa aaaa",
+		idNum: "001",
+		fullName: "John Doe",
 	});
 	const { idNum, fullName } = formData;
 	const navigate = useNavigate();
