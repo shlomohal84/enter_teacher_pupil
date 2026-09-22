@@ -39,7 +39,7 @@ export default function Register() {
 		e.preventDefault();
 		try {
 			const { data } = await axios.post(
-				`${__API_BASE__}/api/auth/register`,
+				`${__API_BASE__}/auth/register`,
 				{ ...formData },
 				{ withCredentials: true },
 			);
