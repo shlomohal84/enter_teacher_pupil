@@ -8,7 +8,7 @@ const {
 	addAssignment,
 	deleteAssignment,
 	deletePupil,
-} = require("../controllers/PupilController");
+} = require("../controllers/pupilController");
 const {
 	isLoggedIn,
 	userVerification,
