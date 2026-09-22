@@ -13,14 +13,33 @@ morgan.token("timestamp", (req, res) => {
 });
 app.use(morgan(":timestamp { :method :url :status } [:response-time ms]"));
 app.use(express.json());
+
+const allowedOrigins = [
+	"http://localhost:5173", // Local Vite development
+	"http://localhost:4173", // Local Vite preview
+	"http://localhost:5000", // Old local port fallback
+];
+
 app.use(
 	cors({
-		origin: "http://localhost:5000",
+		origin: function (origin, callback) {
+			// Allow requests with no origin (like Postman or mobile apps)
+			if (!origin) return callback(null, true);
+
+			// Allow if origin matches our list OR belongs to your personal Vercel deployment sub-domains
+			if (
+				allowedOrigins.indexOf(origin) !== -1 ||
+				origin.endsWith(".vercel.app")
+			) {
+				return callback(null, true);
+			} else {
+				return callback(new Error("Not allowed by CORS"));
+			}
+		},
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
 	}),
 );
-app.use(cors({ origin: "https://vercel.app" }));
 
 app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 app.use(cookieParser());
