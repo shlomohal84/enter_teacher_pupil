@@ -1,36 +1,58 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
+import { usePupils } from "#src/hooks/usePupils.js";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+export default function PupilDetails({ idNum, fullName, _id }) {
+	const { setPupils } = usePupils();
+	const handleDeletePupil = async () => {
+		try {
+			await axios.delete("/api/pupils", {
+				data: { pupilId: _id },
+				withCredentials: true,
+			});
+			setPupils((prevState) => prevState.filter((pupil) => pupil._id != _id));
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
-export default function PupilDetails({ idNum, fullName /* , grades */, _id }) {
 	return (
 		<div className="PupilDetails" style={{ textAlign: "center" }}>
-			<h3>
-				{fullName} (ID# {idNum})
-			</h3>
-
-			<div className="grades-container">
-				{/* {grades.map((grade) => (
-					<div
-						className="grade-wrapper"
-						key={idNum}
-						style={{
-							display: "flex",
-							gap: "5px",
-							textAlign: "center",
-							border: "1px solid black",
-						}}
+			<Card sx={{ minWidth: 275 }}>
+				<CardContent>
+					<Typography
+						gutterBottom
+						sx={{ color: "text.secondary", fontSize: 14 }}
 					>
-						{Object.entries(grade).map((g) => (
-							<div key={g}>
-								<p>{g[0]}</p>
-								<p>{g[1]}</p>
-							</div>
-						))}
-					</div>
-				))} */}
-				<div>
-					<Link to={"/" + _id}>Show Pupil</Link>
-				</div>
-			</div>
+						ID Number: {idNum}
+					</Typography>
+					<Typography variant="h5" component="div">
+						{fullName}
+					</Typography>
+				</CardContent>
+				<CardActions sx={{ justifyContent: "center" }}>
+					<Button
+						variant="contained"
+						component={RouterLink}
+						to={"/" + _id}
+						size="small"
+					>
+						Show Pupil
+					</Button>
+					<Button
+						color="error"
+						size="small"
+						variant="contained"
+						onClick={handleDeletePupil}
+					>
+						Delete
+					</Button>
+				</CardActions>
+			</Card>
 		</div>
 	);
 }

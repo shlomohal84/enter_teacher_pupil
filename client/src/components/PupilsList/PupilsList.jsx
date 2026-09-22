@@ -17,7 +17,7 @@ export default function PupilsList() {
 					Add Pupil
 				</Button>
 			</div>
-			<div className="pupils padding-top">
+			<div className="flex-column">
 				{pupils.map((pupil) => (
 					<div key={pupil.idNum}>
 						<PupilDetails {...pupil} />

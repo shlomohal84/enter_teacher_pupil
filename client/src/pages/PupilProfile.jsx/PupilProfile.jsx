@@ -1,8 +1,10 @@
 // import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
 import axios from "axios";
-
+import { Link as RouterLink } from "react-router-dom";
+import Button from "@mui/material/Button";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 export default function PupilProfile() {
 	const { id } = useParams();
 	const { pupils, setPupils } = usePupils();
@@ -37,21 +39,63 @@ export default function PupilProfile() {
 
 	return (
 		<div className="PupilProfile">
-			<Link to="/">Back to teacher profile</Link>
-			<h1>
-				{pupil.idNum} - {pupil.fullName}
+			<Button variant="contained" component={RouterLink} to={"/"} size="small">
+				Back to teacher profile
+			</Button>
+			<h1 style={{ textAlign: "center", marginTop: "30px" }}>
+				{pupil.fullName}
 			</h1>
-			<div className="assignments-container">
+			<div className="assignments-container flex-column">
 				{pupil.assignments.map((assignment) => (
 					<div key={assignment._id} className="flex-row">
-						<span>{assignment.title}</span>
-						<form onSubmit={(e) => handleDeleteAssignment(e, assignment._id)}>
-							<button type="submit">x</button>
+						<form
+							style={{
+								display: "flex",
+								flexDirection: "row", // Keeps elements side-by-side
+								alignItems: "center", // Vertically aligns the button and text midlines
+								gap: "12px", // Clean spacing between button and text
+								width: "100%",
+							}}
+							onSubmit={(e) => handleDeleteAssignment(e, assignment._id)}
+						>
+							<Button
+								type="submit"
+								size="small"
+								type="submit"
+								sx={{
+									minWidth: "40px",
+									height: "40px",
+									p: 0,
+									flexShrink: 0, // Crucial: Prevents the button from squeezing when text gets long
+								}}
+							>
+								<DeleteForeverIcon color="error" fontSize="small" />
+							</Button>
+							<h3
+								style={{
+									margin: 0,
+									flexGrow: 1, // Takes up all available horizontal space
+									minWidth: 0, // Crucial: Tells the browser it is allowed to shrink/wrap text
+									wordBreak: "break-word", // Wraps long words nicely without pushing the form structure wide
+								}}
+							>
+								{assignment.title}
+							</h3>
+							<div style={{ flexGrow: 1, flexBasis: 0 }} />
 						</form>
 					</div>
 				))}
 			</div>
-			<Link to="./add">Add Assignment</Link>
+			<Button
+				variant="contained"
+				component={RouterLink}
+				to={`./add`}
+				size="small"
+				className="flex-column"
+				sx={{ justifySelf: "center", display: "flex", marginTop: "30px" }}
+			>
+				Add assignment
+			</Button>
 		</div>
 	);
 }

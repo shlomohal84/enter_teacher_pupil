@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { Link as RouterLink } from "react-router-dom";
+
 export default function AddPupil() {
 	const { setPupils } = usePupils();
 
@@ -36,8 +39,10 @@ export default function AddPupil() {
 	};
 	return (
 		<div className="AddPupil">
-			<h1>Add Pupil</h1>
-
+			<h1 style={{ textAlign: "center" }}>Add Pupil</h1>
+			<Button variant="contained" component={RouterLink} to={"/"} size="small">
+				Back to teacher profile
+			</Button>
 			<form onSubmit={handleAddPupil} className="form-container flex-column">
 				<TextField
 					onChange={handleInputChange}
@@ -61,7 +66,9 @@ export default function AddPupil() {
 					id="outlined-basic"
 					variant="outlined"
 				/>
-				<button type="submit">Add Pupil</button>
+				<Button type="submit" variant="contained" size="small">
+					Add Pupil
+				</Button>
 			</form>
 		</div>
 	);

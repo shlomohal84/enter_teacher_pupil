@@ -64,10 +64,24 @@ module.exports.showPupil = async (req, res) => {
 
 module.exports.deletePupil = async (req, res) => {
 	try {
-		console.log(req.body);
-		return res.status(200).json({ message: "Under development" });
+		const userId = req.user._id;
+
+		if (!req.body)
+			return res.status(404).json({ message: "No payload was sent" });
+		const { pupilId } = req.body;
+		const pupil = await Pupil.findOne({ _id: pupilId });
+
+		if (!pupil) return res.status(404).json({ message: "Pupil not found" });
+
+		if (pupil.user._id.toString() !== userId.toString())
+			return res.status(401).json({ message: "User not authorized" });
+
+		await pupil.deleteOne({ _id: pupilId });
+
+		return res.status(200).json({ message: `Deleted pupil: ${pupilId}` });
 	} catch (error) {
-		return res.status(400).json({ message: error });
+		console.log(error);
+		return res.status(400).json({ message: error.message });
 	}
 };
 
@@ -96,7 +110,6 @@ module.exports.addAssignment = async (req, res) => {
 module.exports.deleteAssignment = async (req, res) => {
 	try {
 		const { assignmentId } = req.body;
-		console.log(req.body);
 		const pupilId = req.params.id;
 
 		const pupil = await Pupil.findOne({ _id: pupilId });

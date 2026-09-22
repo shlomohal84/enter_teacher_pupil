@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
+import Button from "@mui/material/Button";
+import { Link as RouterLink } from "react-router-dom";
+import TextField from "@mui/material/TextField";
 
 export default function AddAssignment() {
 	const [formData, setFormData] = useState({ title: "" });
@@ -46,16 +49,33 @@ export default function AddAssignment() {
 
 	return (
 		<div>
-			<h1>AddAssignment</h1>
-			<form onSubmit={handleAddAssignment} className="flex-column">
-				<input
+			<h1>Add Assignment</h1>
+			<Button
+				variant="contained"
+				component={RouterLink}
+				to=".."
+				relative="path"
+				size="small"
+				sx={{ justifySelf: "center", display: "flex" }}
+			>
+				Back to pupil profile
+			</Button>
+			<form onSubmit={handleAddAssignment} className="flex-column padding-top">
+				<TextField
 					onChange={handleInputChange}
 					type="text"
-					placeholder="Assignment"
+					placeholder="Assignment Description"
+					label="Assignment Description"
 					name="title"
 					value={title}
+					variant="outlined"
+					required
+					id="assignment-description"
 				/>
-				<button type="submit">Add Assignment</button>
+				<Button type="submit" variant="contained" size="small">
+					Add assignment
+				</Button>
+				{/* <button type="submit">Add Assignment</button> */}
 			</form>
 		</div>
 	);

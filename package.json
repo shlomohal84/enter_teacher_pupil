@@ -2,16 +2,16 @@
 	"name": "backend",
 	"version": "1.0.0",
 	"description": "",
-	"main": "server.js",
+	"main": "backendserver.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "nodemon server.js || node server.js",
-    "stack":"concurrently \"pnpm run dev \" \"cd ../client && pnpm run dev  \" "
+		"dev": "nodemon backend/server.js || node backend/server.js",
+		"stack": "concurrently \"pnpm run dev \" \" pnpm --dir client run dev  \" "
 	},
 	"keywords": [],
 	"author": "",
 	"imports": {
-		"#*": "./*"
+		"#*": "./backend/*"
 	},
 	"license": "ISC",
 	"type": "commonjs",
