@@ -20,6 +20,8 @@ app.use(
 		credentials: true,
 	}),
 );
+app.use(cors({ origin: "https://vercel.app" }));
+
 app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 app.use(cookieParser());
 

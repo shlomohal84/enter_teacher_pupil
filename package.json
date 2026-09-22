@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon backend/server.js || node backend/server.js",
-		"stack": "concurrently \"pnpm run dev \" \" pnpm --dir client run dev  \" "
+		"stack": "concurrently \"pnpm run dev \" \" pnpm --dir client run dev  \" ",
+		"start": "node backend/server.js"
 	},
 	"keywords": [],
 	"author": "",
