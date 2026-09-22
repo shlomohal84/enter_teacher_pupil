@@ -1,3 +1,5 @@
+/* global __API_BASE__ */
+
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -26,9 +28,13 @@ export default function AddPupil() {
 			fullName: fullName,
 		};
 		try {
-			const { data } = await axios.post("api/pupils/add", pupilData, {
-				withCredentials: true,
-			});
+			const { data } = await axios.post(
+				`${__API_BASE__}/pupils/add`,
+				pupilData,
+				{
+					withCredentials: true,
+				},
+			);
 			setPupils((prevState) => [...prevState, data.pupil]);
 			navigate("/");
 		} catch (error) {

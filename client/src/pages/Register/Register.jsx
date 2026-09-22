@@ -1,3 +1,5 @@
+/* global __API_BASE__ */
+
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +39,7 @@ export default function Register() {
 		e.preventDefault();
 		try {
 			const { data } = await axios.post(
-				"/api/auth/register",
+				`${__API_BASE__}/api/auth/register`,
 				{ ...formData },
 				{ withCredentials: true },
 			);

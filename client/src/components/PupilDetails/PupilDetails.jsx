@@ -1,3 +1,5 @@
+/* global __API_BASE__ */
+
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { usePupils } from "#src/hooks/usePupils.js";
@@ -10,7 +12,7 @@ export default function PupilDetails({ idNum, fullName, _id }) {
 	const { setPupils } = usePupils();
 	const handleDeletePupil = async () => {
 		try {
-			await axios.delete("/api/pupils", {
+			await axios.delete(`${__API_BASE__}/pupils`, {
 				data: { pupilId: _id },
 				withCredentials: true,
 			});

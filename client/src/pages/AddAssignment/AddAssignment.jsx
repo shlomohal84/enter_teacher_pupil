@@ -1,3 +1,5 @@
+/* global __API_BASE__ */
+
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -21,7 +23,7 @@ export default function AddAssignment() {
 		e.preventDefault();
 		try {
 			const { data } = await axios.put(
-				`/api/pupils/${id}/add`,
+				`${__API_BASE__}/pupils/${id}/add`,
 				{ title },
 				{ withCredentials: true },
 			);

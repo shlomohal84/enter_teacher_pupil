@@ -1,3 +1,5 @@
+/* global __API_BASE__ */
+
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -39,10 +41,11 @@ export default function Login() {
 		setLocalSubmitting(true);
 		try {
 			const { data } = await axios.post(
-				"/api/auth/login",
+				`${__API_BASE__}/auth/login`,
 				{ ...formData },
 				{ withCredentials: true },
 			);
+
 			const { success, message, user } = data;
 			if (success) {
 				handleSuccess(message);
@@ -54,7 +57,7 @@ export default function Login() {
 				setLocalSubmitting(false);
 			}
 		} catch (error) {
-			console.log("Login component submission error", error);
+			console.log("Login component submission error", error.message);
 			setLocalSubmitting(false);
 		}
 	};

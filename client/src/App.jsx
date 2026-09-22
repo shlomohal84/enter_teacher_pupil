@@ -1,3 +1,5 @@
+/* global __API_BASE__ */
+
 import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login, Register, Home } from "./pages";
@@ -26,7 +28,7 @@ function App() {
 		const getPupils = async () => {
 			try {
 				setLoadingPupils(true);
-				const { data } = await axios.get("/api/pupils", {
+				const { data } = await axios.get(`${__API_BASE__}/pupils`, {
 					withCredentials: true,
 				});
 				setPupils(data.pupils || []);

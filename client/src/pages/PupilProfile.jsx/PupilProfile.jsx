@@ -1,4 +1,5 @@
-// import { useEffect } from "react";
+/* global __API_BASE__ */
+
 import { useParams } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
 import axios from "axios";
@@ -15,7 +16,7 @@ export default function PupilProfile() {
 	const handleDeleteAssignment = async (e, id) => {
 		e.preventDefault();
 		try {
-			await axios.delete(`/api/pupils/${pupil._id}/delete`, {
+			await axios.delete(`${__API_BASE__}/pupils/${pupil._id}/delete`, {
 				data: { assignmentId: id },
 				withCredentials: true,
 			});
