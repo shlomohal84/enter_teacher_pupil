@@ -5,6 +5,7 @@ const allowedOrigins = [
 	"http://localhost:4173",
 	"http://localhost:5000",
 	"https://onrender.com",
+	"https://vercel.app",
 ];
 
 // Helper function to check if the incoming origin is allowed
