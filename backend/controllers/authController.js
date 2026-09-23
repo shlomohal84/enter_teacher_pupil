@@ -50,10 +50,17 @@ module.exports.login = async (req, res) => {
 			return res.json({ message: "Incorrect ID number or password" });
 		}
 		const token = createSecretToken(user._id);
+
+		const isLocalhost =
+			req.headers.origin?.includes("localhost") ||
+			req.headers.referer?.includes("localhost");
+
 		res.cookie("token", token, {
-			withCredentials: true,
-			httpOnly: false,
+			httpOnly: true,
 			path: "/",
+			sameSite: "none",
+			secure: isLocalhost ? false : true,
+			maxAge: 24 * 60 * 60 * 1000,
 		});
 		return res.status(201).json({
 			message: "User logged in successfully",

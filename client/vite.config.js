@@ -15,7 +15,7 @@ export default defineConfig(({ command }) => {
 			},
 		},
 
-		// 2. Keeps names intact during development pre-bundling
+		// Keeps names intact during development pre-bundling
 		optimizeDeps: {
 			rolldownOptions: {
 				output: {
@@ -23,21 +23,26 @@ export default defineConfig(({ command }) => {
 				},
 			},
 		},
-		// 1. This handles local development interception
+
+		// Handles local development proxy interception
 		server: {
 			proxy: {
 				"/api": {
-					target: "http://localhost:5000",
+					target: "http://127.0.0.1:5000", // 127.0.0.1 prevents internal Vite 8 DNS lookup lags
 					changeOrigin: true,
 					secure: false,
-					// rewrite: (path) => path.replace(/^\/api/, ""),
+					// UNCOMMENT THIS: Stretches compatibility if your backend routing lacks an explicit "/api" prefix
+					rewrite: (path) => path.replace(/^\/api/, ""),
 				},
 			},
 		},
 
-		// 2. This injects a global variable accessible anywhere in your code
+		// Injects a global variable accessible anywhere in your code
 		define: {
-			__API_BASE__: JSON.stringify(isDev ? "/api" : "https://onrender.com"),
+			__API_BASE__: JSON.stringify(
+				// If your production backend uses a route prefix, change the string below to "https://onrender.com"
+				isDev ? "/api" : "https://enter-teacher-pupil.onrender.com",
+			),
 		},
 	};
 });

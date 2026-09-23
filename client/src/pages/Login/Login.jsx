@@ -1,13 +1,11 @@
-/* global __API_BASE__ */
-
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styles from "../Register/Register.module.css";
 import { useAuth } from "#src/hooks/useAuth.js";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import api from "#src/api/axios.js";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -40,8 +38,8 @@ export default function Login() {
 		e.preventDefault();
 		setLocalSubmitting(true);
 		try {
-			const { data } = await axios.post(
-				`${__API_BASE__}/auth/login`,
+			const { data } = await api.post(
+				"/auth/login",
 				{ ...formData },
 				{ withCredentials: true },
 			);
