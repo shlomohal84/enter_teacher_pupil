@@ -4,9 +4,12 @@ const path = require("path");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
 const authRoutes = require("./routes/authRoutes");
 const pupilRoutes = require("./routes/pupilRoutes");
+const {
+	handlePreflight,
+	configureCors,
+} = require("#middleware/corsMiddleware.js");
 
 morgan.token("timestamp", (req, res) => {
 	return new Date().toLocaleString();
@@ -14,32 +17,29 @@ morgan.token("timestamp", (req, res) => {
 app.use(morgan(":timestamp { :method :url :status } [:response-time ms]"));
 app.use(express.json());
 
-const allowedOrigins = [
-	"http://localhost:5173", // Local Vite development
-	"http://localhost:4173", // Local Vite preview
-	"http://localhost:5000", // Old local port fallback
-];
+app.use(handlePreflight); // 1. Catches and resolves OPTIONS requests immediately
+app.use(configureCors); // 2. Validates normal application traffic headers
 
-app.use(
-	cors({
-		origin: function (origin, callback) {
-			// Allow requests with no origin (like Postman or mobile apps)
-			if (!origin) return callback(null, true);
+// app.use(
+// 	cors({
+// 		origin: function (origin, callback) {
+// 			// Allow requests with no origin (like Postman or mobile apps)
+// 			if (!origin) return callback(null, true);
 
-			// Allow if origin matches our list OR belongs to your personal Vercel deployment sub-domains
-			if (
-				allowedOrigins.indexOf(origin) !== -1 ||
-				origin.endsWith(".vercel.app")
-			) {
-				return callback(null, true);
-			} else {
-				return callback(new Error("Not allowed by CORS"));
-			}
-		},
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-	}),
-);
+// 			// Allow if origin matches our list OR belongs to your personal Vercel deployment sub-domains
+// 			if (
+// 				allowedOrigins.indexOf(origin) !== -1 ||
+// 				origin.endsWith(".vercel.app")
+// 			) {
+// 				return callback(null, true);
+// 			} else {
+// 				return callback(new Error("Not allowed by CORS"));
+// 			}
+// 		},
+// 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+// 		credentials: true,
+// 	}),
+// );
 
 app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 app.use(cookieParser());

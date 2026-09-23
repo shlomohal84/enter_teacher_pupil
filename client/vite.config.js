@@ -7,7 +7,22 @@ export default defineConfig(({ command }) => {
 
 	return {
 		plugins: [react()],
+		build: {
+			rolldownOptions: {
+				output: {
+					keepNames: true, // Prevents function/component name mangling
+				},
+			},
+		},
 
+		// 2. Keeps names intact during development pre-bundling
+		optimizeDeps: {
+			rolldownOptions: {
+				output: {
+					keepNames: true,
+				},
+			},
+		},
 		// 1. This handles local development interception
 		server: {
 			proxy: {
@@ -15,16 +30,14 @@ export default defineConfig(({ command }) => {
 					target: "http://localhost:5000",
 					changeOrigin: true,
 					secure: false,
-					rewrite: (path) => path.replace(/^\/api/, ""),
+					// rewrite: (path) => path.replace(/^\/api/, ""),
 				},
 			},
 		},
 
 		// 2. This injects a global variable accessible anywhere in your code
 		define: {
-			__API_BASE__: JSON.stringify(
-				isDev ? "/api" : "https://enter-teacher-pupil.onrender.com",
-			),
+			__API_BASE__: JSON.stringify(isDev ? "/api" : "https://onrender.com"),
 		},
 	};
 });

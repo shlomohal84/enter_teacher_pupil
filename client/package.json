@@ -9,7 +9,7 @@
 		"lint": "eslint .",
 		"preview": "vite preview"
 	},
-  "imports": {
+	"imports": {
 		"#*": "./*"
 	},
 	"dependencies": {
