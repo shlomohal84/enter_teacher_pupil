@@ -2,6 +2,34 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 const User = require("#models/User.js");
 
+const handleJwtVerification = (req, res, next) => {
+	return async (err, data) => {
+		if (err)
+			return res
+				.status(401)
+				.json({ status: false, message: "Token expired or invalid" });
+		try {
+			const user = await User.findById(data.id).select("-password");
+			if (user) {
+				req.user = user;
+				// Direct handshake response for React initial load
+				if (req.path === "/verify" || req.path === "me") {
+					return res.status(200).json({ status: true, user: user.name });
+				}
+				return next();
+			} else {
+				return res
+					.status(400)
+					.json({ status: false, message: "User not found" });
+			}
+		} catch (error) {
+			return res
+				.status(500)
+				.json({ status: false, message: "Internal server error" });
+		}
+	};
+};
+
 module.exports.isLoggedIn = (req, res, next) => {
 	const token = req.cookies.token;
 	if (!token) {
@@ -31,51 +59,13 @@ module.exports.isLoggedIn = (req, res, next) => {
 };
 
 module.exports.userVerification = (req, res, next) => {
-	const token = req.cookies.token;
+	const token = req.cookies?.token;
 	if (!token) {
-		return res.json({ status: false });
+		return res
+			.status(401)
+			.json({ status: false, message: "No session token found" });
 	}
-	jwt.verify(token, jwtSecret, async (err, data) => {
-		try {
-			const user = await User.findById(data.id);
-			if (user) {
-				req.user = user;
-				return next();
-			} else {
-				return res.json({ status: false, message: "User not found" });
-			}
-		} catch (error) {
-			return next(error);
-		}
-	});
+	// Pass the separated callback variable into the third argument slot
+	const verificationCallback = handleJwtVerification(req, res, next);
+	jwt.verify(token, jwtSecret, verificationCallback);
 };
-
-// module.exports.userVerification = (req, res) => {
-// 	const token = req.cookies.token;
-// 	if (!token) {
-// 		return res.json({ status: false });
-// 	}
-// 	jwt.verify(token, jwtSecret, async (err, data) => {
-// 		if (err) {
-// 			return res.json({ status: false });
-// 		} else {
-// 			const user = await User.findById(data.id);
-// 			if (user) {
-// 				return res.json({ status: true, user: user.name });
-// 			} else {
-// 				return res.json({ status: false });
-// 			}
-// 		}
-// 	});
-// };
-// // module.exports = (req, res, next) => {
-// // 	const token = req.header("authorization");
-// // 	if (!token) return res.status(401).json({ message: "Accesss denied" });
-// // 	try {
-// // 		const decoded = jwt.verify(token, jwtSecret);
-// // 		req.user = decoded;
-// // 		next();
-// // 	} catch (error) {
-// // 		res.status(400).json({ message: "Invalid token" });
-// // 	}
-// // };

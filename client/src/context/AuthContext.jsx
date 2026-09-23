@@ -1,5 +1,3 @@
-/* global __API_BASE__ */
-
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
@@ -13,7 +11,7 @@ export function AuthProvider({ children }) {
 
 	const logout = useCallback(async () => {
 		try {
-			await axios.post(`${__API_BASE__}/logout`, { withCredentials: true });
+			await axios.post(`/logout`, { withCredentials: true });
 		} catch (error) {
 			console.log("Backend failed to logout:", error);
 		} finally {
@@ -36,10 +34,9 @@ export function AuthProvider({ children }) {
 			}
 
 			try {
-				const { data } = await axios.post(
-					`${__API_BASE__}/auth/verify-session`,
-					{ withCredentials: true },
-				);
+				const { data } = await axios.post(`/auth/verify-session`, {
+					withCredentials: true,
+				});
 				if (data.status) {
 					setUser(data.user);
 				} else {

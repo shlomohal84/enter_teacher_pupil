@@ -1,7 +1,6 @@
 import { useAuth } from "#src/hooks/useAuth.js";
 import PupilsList from "../../components/PupilsList/PupilsList";
 import Typography from "@mui/material/Typography";
-// import { toast } from "react-toastify";
 
 export default function Home() {
 	const { user } = useAuth();
