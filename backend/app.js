@@ -15,13 +15,14 @@ morgan.token("timestamp", (req, res) => {
 	return new Date().toLocaleString();
 });
 app.use(morgan(":timestamp { :method :url :status } [:response-time ms]"));
+
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(handlePreflight); // 1. Catches and resolves OPTIONS requests immediately
 app.use(configureCors); // 2. Validates normal application traffic headers
 
 app.use(express.static(path.join(__dirname, "..", "client", "dist")));
-app.use(cookieParser());
 
 app.get("/health", (req, res) => {
 	return res.json({
