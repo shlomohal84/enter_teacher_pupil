@@ -59,7 +59,7 @@ module.exports.login = async (req, res) => {
 			httpOnly: true,
 			path: "/",
 			sameSite: "none",
-			secure: isLocalhost ? false : true,
+			secure: true,
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		return res.status(201).json({
