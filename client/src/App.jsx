@@ -1,5 +1,3 @@
-/* global __API_BASE__ */
-
 import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login, Register, Home } from "./pages";
@@ -12,47 +10,58 @@ import PupilProfile from "./pages/PupilProfile.jsx/PupilProfile";
 
 import "./App.css";
 import { useAuth } from "./hooks/useAuth";
-import axios from "axios";
+import api from "./api/axios";
 import AddAssignment from "./pages/AddAssignment/AddAssignment";
 import PublicRoute from "./components/PublicRoute/PublicRoute";
 function App() {
+	const { setUser } = useAuth(null);
+	const [loading, setLoading] = useState(true);
 	const [pupils, setPupils] = useState([]);
-	const [loadingPupils, setLoadingPupils] = useState(true);
-
-	const { user, isLoading: authLoading } = useAuth();
 	// Explicitly create your boolean flag using the !! operator
 
 	useEffect(() => {
-		if (authLoading || !user) return;
-
-		const getPupils = async () => {
+		const checkUserSession = async () => {
 			try {
-				setLoadingPupils(true);
-				const { data } = await axios.get(`${__API_BASE__}/pupils`, {
+				const { data } = await api.get("/auth/verify-session", {
 					withCredentials: true,
 				});
-				setPupils(data.pupils || []);
+				if (data.status && data.user) {
+					setUser(data.user);
+					// const pupilsResponse = await api.get("/pupils");
+					// if (pupilsResponse.data) {
+					// 	setPupils(pupilsResponse.data.pupils || pupilsResponse.data);
+					// }
+				}
 			} catch (error) {
-				console.error("Failed to bootstrap application data:", error);
+				if (error.response?.status !== 401 && error.response?.status !== 400) {
+					console.log(
+						"Actual infrastructure network connection error:",
+						error.message,
+					);
+				}
+				setUser(null);
 			} finally {
-				setLoadingPupils(false);
+				setLoading(false);
 			}
 		};
-		getPupils();
-	}, [user, authLoading]);
+		checkUserSession();
+	}, [setUser]);
 
-	useEffect(() => {
-		if (authLoading || user) return;
-		const timeoutId = setTimeout(() => {
-			if (pupils.length > 0) {
-				setPupils([]);
-			}
-			if (loadingPupils !== false) {
-				setLoadingPupils(false);
-			}
-		}, 0);
-		return () => clearTimeout(timeoutId);
-	}, [user, authLoading, pupils.length, loadingPupils]);
+	if (loading) {
+		return (
+			<div
+				className="loading-screen"
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					height: "100vh",
+				}}
+			>
+				<h2>Synchronizing profile session...</h2>
+			</div>
+		);
+	}
 
 	return (
 		<div className="App">

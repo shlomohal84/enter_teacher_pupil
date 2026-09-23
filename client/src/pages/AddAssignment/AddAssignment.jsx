@@ -1,12 +1,11 @@
-/* global __API_BASE__ */
-
 import { useState } from "react";
-import axios from "axios";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
 import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import api from "#src/api/axios.js";
 
 export default function AddAssignment() {
 	const [formData, setFormData] = useState({ title: "" });
@@ -22,8 +21,8 @@ export default function AddAssignment() {
 	const handleAddAssignment = async (e) => {
 		e.preventDefault();
 		try {
-			const { data } = await axios.put(
-				`${__API_BASE__}/pupils/${id}/add`,
+			const { data } = await api.put(
+				`/pupils/${id}/add`,
 				{ title },
 				{ withCredentials: true },
 			);

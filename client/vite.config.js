@@ -31,6 +31,7 @@ export default defineConfig(({ command }) => {
 					target: "https://enter-teacher-pupil.onrender.com", // 127.0.0.1 prevents internal Vite 8 DNS lookup lags
 					changeOrigin: true,
 					secure: false,
+					rewrite: (path) => path.replace(/^\/api/, ""),
 				},
 			},
 		},
@@ -39,7 +40,6 @@ export default defineConfig(({ command }) => {
 		define: {
 			__API_BASE__: JSON.stringify(
 				// If your production backend uses a route prefix, change the string below to "https://onrender.com"
-				// isDev ? "/api" : "https://enter-teacher-pupil.onrender.com",
 				isDev ? "/api" : "https://enter-teacher-pupil.onrender.com",
 			),
 		},

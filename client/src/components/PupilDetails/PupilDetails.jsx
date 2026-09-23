@@ -1,18 +1,16 @@
-/* global __API_BASE__ */
-
 import { Link as RouterLink } from "react-router-dom";
-import axios from "axios";
 import { usePupils } from "#src/hooks/usePupils.js";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import api from "#src/api/axios.js";
 export default function PupilDetails({ idNum, fullName, _id }) {
 	const { setPupils } = usePupils();
 	const handleDeletePupil = async () => {
 		try {
-			await axios.delete(`${__API_BASE__}/pupils`, {
+			await api.delete(`/pupils`, {
 				data: { pupilId: _id },
 				withCredentials: true,
 			});

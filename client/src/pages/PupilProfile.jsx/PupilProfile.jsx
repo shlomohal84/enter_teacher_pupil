@@ -1,11 +1,9 @@
-/* global __API_BASE__ */
-
 import { useParams } from "react-router-dom";
 import { usePupils } from "#src/hooks/usePupils.js";
-import axios from "axios";
 import { Link as RouterLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import api from "#src/api/axios.js";
 export default function PupilProfile() {
 	const { id } = useParams();
 	const { pupils, setPupils } = usePupils();
@@ -16,7 +14,7 @@ export default function PupilProfile() {
 	const handleDeleteAssignment = async (e, id) => {
 		e.preventDefault();
 		try {
-			await axios.delete(`${__API_BASE__}/pupils/${pupil._id}/delete`, {
+			await api.delete(`/pupils/${pupil._id}/delete`, {
 				data: { assignmentId: id },
 				withCredentials: true,
 			});

@@ -1,12 +1,10 @@
-/* global __API_BASE__ */
-
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styles from "./Register.module.css";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import api from "#src/api/axios.js";
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -38,8 +36,8 @@ export default function Register() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const { data } = await axios.post(
-				`${__API_BASE__}/auth/register`,
+			const { data } = await api.post(
+				`/auth/register`,
 				{ ...formData },
 				{ withCredentials: true },
 			);
